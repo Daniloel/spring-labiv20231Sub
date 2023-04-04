@@ -1,12 +1,21 @@
 package br.gov.sp.fatec.springlabiv20231.entity;
 
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "usr_usuario")
@@ -21,7 +30,18 @@ public class Usuario {
     private String nome;
 
     @Column(name = "usr_senha")
+    @JsonIgnore
     private String senha;
+
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Anotacao> anotacoes;
+
+    @ManyToMany
+    @JoinTable(name = "uau_usuario_autorizacao",
+        joinColumns = {@JoinColumn(name = "usr_id")},
+        inverseJoinColumns = {@JoinColumn(name = "aut_id")})
+    private List<Autorizacao> autorizacoes;
 
     public Usuario(String nome, String senha) {
         this.nome = nome;
@@ -56,6 +76,20 @@ public class Usuario {
         this.senha = senha;
     }
 
-    
+    public List<Anotacao> getAnotacoes() {
+        return anotacoes;
+    }
+
+    public void setAnotacoes(List<Anotacao> anotacoes) {
+        this.anotacoes = anotacoes;
+    }
+
+    public List<Autorizacao> getAutorizacoes() {
+        return autorizacoes;
+    }
+
+    public void setAutorizacoes(List<Autorizacao> autorizacoes) {
+        this.autorizacoes = autorizacoes;
+    }  
 
 }
