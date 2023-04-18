@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,9 @@ public class UsuarioService implements IUsuarioService{
     @Autowired
     private AutorizacaoRepository autRepo;
 
+    @Autowired
+    private PasswordEncoder encoder;
+
     public Usuario buscarPorId(Long id) {
         Optional<Usuario> usuarioOp = usuarioRepo.findById(id);
         if(usuarioOp.isPresent()) {
@@ -37,6 +42,7 @@ public class UsuarioService implements IUsuarioService{
                 usuario.getSenha() == null) {
             throw new IllegalArgumentException("Nome e senha inválidos!");
         }
+        usuario.setSenha(encoder.encode(usuario.getSenha()));
         return usuarioRepo.save(usuario);
     }
 
@@ -58,6 +64,7 @@ public class UsuarioService implements IUsuarioService{
         return usuarioRepo.save(usuario);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public List<Usuario> buscarTodos() {
         return usuarioRepo.findAll();
     }
