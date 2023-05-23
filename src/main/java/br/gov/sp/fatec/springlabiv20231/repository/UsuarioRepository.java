@@ -4,12 +4,11 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import br.gov.sp.fatec.springlabiv20231.entity.Usuario;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
-    
-    public List<Usuario> findByAutorizacoesNome(String nomeAutorizacao);
     
     public Usuario findByNome(String nome);
 
@@ -25,5 +24,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 
     @Query("select u from Usuario u where u.nome = ?1 and u.senha = ?2")
     public Usuario buscarPeloNomeESenha(String nome, String senha);
+
+    public List<Usuario> findByAutorizacoesNome(String nomeAutorizacao);
+    
+    @Query("select u from Usuario u join u.autorizacoes a where a.nome = :nome")
+    public List<Usuario> buscarPeloNomeAutorizacao(@Param("nome") String nomeAutorizacao);
 
 }

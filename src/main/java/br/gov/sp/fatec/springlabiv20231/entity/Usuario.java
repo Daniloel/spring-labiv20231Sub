@@ -41,6 +41,7 @@ public class Usuario {
     @JoinTable(name = "uau_usuario_autorizacao",
         joinColumns = {@JoinColumn(name = "usr_id")},
         inverseJoinColumns = {@JoinColumn(name = "aut_id")})
+    @JsonIgnore
     private List<Autorizacao> autorizacoes;
 
     public Usuario(String nome, String senha) {
