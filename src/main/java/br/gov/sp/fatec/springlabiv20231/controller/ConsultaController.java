@@ -10,25 +10,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.gov.sp.fatec.springlabiv20231.entity.Lancamento;
-import br.gov.sp.fatec.springlabiv20231.service.ILancamentoService;
+import br.gov.sp.fatec.springlabiv20231.entity.Consulta;
+import br.gov.sp.fatec.springlabiv20231.service.IConsultaService;
 
 @RestController
 @CrossOrigin
-@RequestMapping(value = "/lancamento")
-public class LancamentoController {
+@RequestMapping(value = "/consulta")
+public class ConsultaController {
 
     @Autowired
-    private ILancamentoService service;
+    private IConsultaService service;
 
     @GetMapping
-    public List<Lancamento> buscarTodos() {
+    public List<Consulta> buscarTodos() {
         return service.buscarTodos();
     }
 
     @PostMapping
-    public Lancamento novo(@RequestBody Lancamento lancamento) {
-        return service.novo(lancamento);
+    public Consulta novo(@RequestBody Consulta consulta) {
+        return service.novo(consulta);
     }
-    
+
 }
