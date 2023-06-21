@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.springlabiv20231.service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +40,7 @@ public class UsuarioService implements IUsuarioService{
     public Usuario novoUsuario(Usuario usuario) {
         if(usuario == null ||
                 usuario.getNome() == null ||
+                usuario.getData() == null ||
                 usuario.getSenha() == null) {
             throw new IllegalArgumentException("Nome e senha inválidos!");
         }
@@ -47,8 +49,8 @@ public class UsuarioService implements IUsuarioService{
     }
 
     @Transactional
-    public Usuario novoUsuarioAutorizacao(String nome, String senha, String nomeAutorizacao) {
-        Usuario usuario = new Usuario(nome, senha);
+    public Usuario novoUsuarioAutorizacao(String nome, String senha, Date data ,String nomeAutorizacao) {
+        Usuario usuario = new Usuario(nome, senha, data);
         Optional<Autorizacao> autOp = autRepo.findByNome(nomeAutorizacao);
         Autorizacao autorizacao;
         if(autOp.isEmpty()) {

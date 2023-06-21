@@ -1,6 +1,9 @@
 package br.gov.sp.fatec.springlabiv20231.entity;
 
 
+
+
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -14,8 +17,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "usr_usuario")
@@ -30,36 +35,40 @@ public class Usuario {
     private String nome;
 
     @Column(name = "usr_senha")
-    @JsonIgnore
     private String senha;
+    
+    @Temporal(TemporalType.DATE)
+    @Column(name = "usr_data_admissao")
+    private Date data;
 
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
-    @JsonIgnore
+  
     private List<Anotacao> anotacoes;
 
     @ManyToMany
     @JoinTable(name = "uau_usuario_autorizacao",
         joinColumns = {@JoinColumn(name = "usr_id")},
         inverseJoinColumns = {@JoinColumn(name = "aut_id")})
-    @JsonIgnore
+   
     private List<Autorizacao> autorizacoes;
 
-    public Usuario(String nome, String senha) {
+    
+
+   
+
+    public Usuario(String nome, String senha, Date data) {
         this.nome = nome;
         this.senha = senha;
+        this.data = data;
     }
+
+
 
     public Usuario() {
         // Faz nada
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+   
 
     public String getNome() {
         return nome;
@@ -91,6 +100,26 @@ public class Usuario {
 
     public void setAutorizacoes(List<Autorizacao> autorizacoes) {
         this.autorizacoes = autorizacoes;
+    }
+
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
+    }
+
+
+
+    public Long getId() {
+        return id;
+    }
+
+
+
+    public void setId(Long id) {
+        this.id = id;
     }  
 
 }
